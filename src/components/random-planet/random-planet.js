@@ -1,6 +1,7 @@
 import React, {useCallback, useLayoutEffect, useState} from 'react';
 import SwapiService from '../../services/SwapiService';
 import Spinner from '../spinner';
+import ErrorIndicator from '../error-indicator';
 
 import './random-planet.css';
 
@@ -14,21 +15,31 @@ function getRandomId() {
 export default React.memo(function RandomPlanet() {
     const [planet, setPlanet] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
     const onPlanetLoaded = useCallback((planet) => {
         setPlanet(planet);
         setLoading(false);
     }, []);
 
+    const onError = () => {
+        setError(true);
+        setLoading(false);
+    };
+
     useLayoutEffect(() => {
-        service.getPlanet(getRandomId()).then(onPlanetLoaded);
+        service.getPlanet(getRandomId())
+            .then(onPlanetLoaded)
+            .catch(onError);
     }, [onPlanetLoaded]);
+
+    const hasData = !(loading || error);
 
     return (
         <div className="random-planet jumbotron rounded">
-            {loading ?
-                <Spinner /> :
-                <PlanetView planet={planet} />}
+            {error && <ErrorIndicator />}
+            {loading && <Spinner />}
+            {hasData && <PlanetView planet={planet} />}
         </div>
     );
 })
