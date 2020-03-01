@@ -1,4 +1,4 @@
-import React, {useCallback, useLayoutEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import SwapiService from '../../services/SwapiService';
 import Spinner from '../spinner';
 import ErrorIndicator from '../error-indicator';
@@ -22,16 +22,21 @@ export default React.memo(function RandomPlanet() {
         setLoading(false);
     }, []);
 
+    const updatePlanet = useCallback(() => {
+        service.getPlanet(getRandomId())
+            .then(onPlanetLoaded)
+            .catch(onError);
+    }, [onPlanetLoaded]);
+
     const onError = () => {
         setError(true);
         setLoading(false);
     };
 
-    useLayoutEffect(() => {
-        service.getPlanet(getRandomId())
-            .then(onPlanetLoaded)
-            .catch(onError);
-    }, [onPlanetLoaded]);
+    useEffect(() => {
+        const interval = setInterval(updatePlanet, 3000);
+        return () => clearInterval(interval);
+    }, [updatePlanet]);
 
     const hasData = !(loading || error);
 
@@ -71,4 +76,4 @@ const PlanetView = ({ planet }) => {
             </div>
         </>
     );
-}
+};
