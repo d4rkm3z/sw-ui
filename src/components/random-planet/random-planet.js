@@ -1,7 +1,9 @@
 import React, {useCallback, useLayoutEffect, useState} from 'react';
 import SwapiService from '../../services/SwapiService';
+import Spinner from '../spinner';
 
 import './random-planet.css';
+
 
 const service = new SwapiService();
 
@@ -10,23 +12,12 @@ function getRandomId() {
 }
 
 export default React.memo(function RandomPlanet() {
-    const [id, setId] = useState(null);
-    const [name, setName] = useState(null);
-    const [population, setPopulation] = useState(null);
-    const [rotationPeriod, setRotationPeriod] = useState(null);
-    const [diameter, setDiameter] = useState(null);
+    const [planet, setPlanet] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const onPlanetLoaded = useCallback(({
-                                            name,
-                                            population,
-                                            diameter,
-                                            rotationPeriod
-                                        }) => {
-        setId(getRandomId());
-        setName(name);
-        setPopulation(population);
-        setRotationPeriod(rotationPeriod);
-        setDiameter(diameter);
+    const onPlanetLoaded = useCallback((planet) => {
+        setPlanet(planet);
+        setLoading(false);
     }, []);
 
     useLayoutEffect(() => {
@@ -35,7 +26,20 @@ export default React.memo(function RandomPlanet() {
 
     return (
         <div className="random-planet jumbotron rounded">
+            {loading ?
+                <Spinner /> :
+                <PlanetView planet={planet} />}
+        </div>
+    );
+})
+
+const PlanetView = ({ planet }) => {
+    const { id, name, population, rotationPeriod, diameter } = planet;
+
+    return (
+        <>
             <img className="planet-image"
+                 alt=""
                  src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`} />
             <div>
                 <h4>{name}</h4>
@@ -54,6 +58,6 @@ export default React.memo(function RandomPlanet() {
                     </li>
                 </ul>
             </div>
-        </div>
+        </>
     );
-})
+}
