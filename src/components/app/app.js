@@ -1,5 +1,7 @@
-import React, {useState} from 'react';
-
+import React, { useState } from 'react';
+import Row from '../row';
+import { Record } from '../item-details/item-details';
+import ErrorBoundry from '../error-boundry';
 import Header from '../header';
 import RandomPlanet from '../random-planet';
 import PeoplePage from '../people-page';
@@ -8,9 +10,6 @@ import SwapiService from '../../services/SwapiService';
 import ItemDetails from '../item-details';
 
 import './app.css';
-import Row from '../row';
-import {Record} from '../item-details/item-details';
-import ErrorBoundry from '../error-boundry';
 
 const service = new SwapiService();
 

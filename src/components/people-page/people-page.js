@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ItemList from '../item-list';
 import ItemDetails from '../item-details';
 import SwapiService from '../../services/SwapiService';
 import Row from '../row';
 import ErrorBoundry from '../error-boundry';
+import { Record } from '../item-details/item-details';
 
 import './people-page.css';
-import {Record} from '../item-details/item-details';
 
 const service = new SwapiService();
 

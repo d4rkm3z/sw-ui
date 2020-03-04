@@ -1,9 +1,9 @@
-import React, {Children, useEffect, useState} from 'react';
+import React, { Children, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-
-import './item-details.css';
 import Spinner from '../spinner';
 import ErrorIndicator from '../error-indicator';
+
+import './item-details.css';
 
 function ItemDetails({ itemId, getData, children }) {
     const [item, setItem] = useState(null);
@@ -48,7 +48,7 @@ const PersonView = ({ item, children }) => {
             <div className="card-body">
                 <h4>{name}</h4>
                 <ul className="list-group list-group-flush">
-                    {Children.map(children, (child, key) =>
+                    {Children.map(children, child =>
                         React.cloneElement(child, { item })
                     )}
                 </ul>

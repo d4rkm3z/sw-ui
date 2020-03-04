@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import SwapiService from '../../services/SwapiService';
 import Spinner from '../spinner';
 import ErrorIndicator from '../error-indicator';
