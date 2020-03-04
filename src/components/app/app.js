@@ -8,6 +8,7 @@ import SwapiService from '../../services/SwapiService';
 import PersonDetails from '../person-details';
 
 import './app.css';
+import Row from '../row';
 
 const service = new SwapiService();
 
@@ -31,29 +32,29 @@ export default React.memo(function App() {
             </div>
             <PeoplePage />
 
-            <div className="row mb2">
-                <div className="col-md-6">
+            <Row
+                leftCol={
                     <ItemList
                         getData={service.getAllPlanets}
                         onItemSelected={onPlanetSelected}
-                        renderItem={({ name }) => name} />
-                </div>
-                <div className="col-md-6">
-                    <PersonDetails personId={selectedPlanet} />
-                </div>
-            </div>
+                    >
+                        {({ name }) => name}
+                    </ItemList>
+                }
+                rightCol={<PersonDetails personId={selectedPlanet} />}
+            />
 
-            <div className="row mb2">
-                <div className="col-md-6">
+            <Row
+                leftCol={
                     <ItemList
                         getData={service.getAllStarships}
                         onItemSelected={onPlanetSelected}
-                        renderItem={({ name }) => name} />
-                </div>
-                <div className="col-md-6">
-                    <PersonDetails personId={selectedPlanet} />
-                </div>
-            </div>
+                    >
+                        {({ name }) => name}
+                    </ItemList>
+                }
+                rightCol={<PersonDetails personId={selectedPlanet} />}
+            />
         </div>
     );
 });

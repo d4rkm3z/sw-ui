@@ -7,7 +7,7 @@ import './item-list.css';
 function ItemList({
                       getData,
                       onItemSelected,
-                      renderItem
+                      children
                   }) {
     const [itemList, setPeopleList] = useState(null);
 
@@ -21,8 +21,9 @@ function ItemList({
             return (
                 <li className="list-group-item"
                     key={id}
-                    onClick={() => onItemSelected(id)}>
-                    {renderItem(item)}
+                    onClick={() => onItemSelected(id)}
+                >
+                    {children(item)}
                 </li>
             );
         });
@@ -40,7 +41,7 @@ function ItemList({
 ItemList.propTypes = {
     getData: PropTypes.func,
     onItemSelected: PropTypes.func,
-    renderItem: PropTypes.func
+    children: PropTypes.any
 };
 
 export default React.memo(ItemList);
