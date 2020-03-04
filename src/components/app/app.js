@@ -5,18 +5,18 @@ import RandomPlanet from '../random-planet';
 import PeoplePage from '../people-page';
 import ItemList from '../item-list';
 import SwapiService from '../../services/SwapiService';
-import PersonDetails from '../person-details';
+import ItemDetails from '../item-details';
 
 import './app.css';
 import Row from '../row';
+import {Record} from '../item-details/item-details';
+import ErrorBoundry from '../error-boundry';
 
 const service = new SwapiService();
 
 export default React.memo(function App() {
     const [showRandomPlanet, setShowRandomPlanet] = useState(true);
-    const [selectedPlanet, setSelectedPlanet] = useState(null);
-
-    const onPlanetSelected = (id) => setSelectedPlanet(id);
+    const [selectedStarship, setSelectedStarship] = useState(null);
 
     return (
         <div className="stardb-app">
@@ -32,29 +32,27 @@ export default React.memo(function App() {
             </div>
             <PeoplePage />
 
-            <Row
-                leftCol={
-                    <ItemList
-                        getData={service.getAllPlanets}
-                        onItemSelected={onPlanetSelected}
-                    >
-                        {({ name }) => name}
-                    </ItemList>
-                }
-                rightCol={<PersonDetails personId={selectedPlanet} />}
-            />
-
-            <Row
-                leftCol={
-                    <ItemList
-                        getData={service.getAllStarships}
-                        onItemSelected={onPlanetSelected}
-                    >
-                        {({ name }) => name}
-                    </ItemList>
-                }
-                rightCol={<PersonDetails personId={selectedPlanet} />}
-            />
+            <ErrorBoundry>
+                <Row
+                    leftCol={
+                        <ItemList
+                            getData={service.getAllStarships}
+                            onItemSelected={setSelectedStarship}
+                        >
+                            {({ name }) => name}
+                        </ItemList>
+                    }
+                    rightCol={
+                        <ItemDetails
+                            itemId={selectedStarship}
+                            getData={service.getStarship}
+                        >
+                            <Record key="model" field="model" label="Model" />
+                            <Record key="manufacturer" field="manufacturer" label="Manufacturer" />
+                        </ItemDetails>
+                    }
+                />
+            </ErrorBoundry>
         </div>
     );
 });

@@ -7,6 +7,7 @@ import './random-planet.css';
 
 
 const service = new SwapiService();
+const TIMEOUT = 5000;
 
 function getRandomId() {
     return Math.floor(Math.random() * 19) + 2;
@@ -34,7 +35,7 @@ export default React.memo(function RandomPlanet() {
     };
 
     useEffect(() => {
-        const interval = setInterval(updatePlanet, 3000);
+        const interval = setInterval(updatePlanet, TIMEOUT);
         return () => clearInterval(interval);
     }, [updatePlanet]);
 

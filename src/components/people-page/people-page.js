@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import ItemList from '../item-list';
-import PersonDetails from '../person-details';
+import ItemDetails from '../item-details';
 import SwapiService from '../../services/SwapiService';
 import Row from '../row';
 import ErrorBoundry from '../error-boundry';
 
 import './people-page.css';
+import {Record} from '../item-details/item-details';
 
 const service = new SwapiService();
 
@@ -21,13 +22,20 @@ export default React.memo(function PeoplePage() {
             {(item) => (`${item.name} (${item.gender}, ${item.birthYear})`)}
         </ItemList>
     );
-    const personDetails = <PersonDetails personId={selectedPerson} />;
+    const itemDetails = (
+        <ItemDetails
+            itemId={selectedPerson}
+            getData={service.getPerson}
+        >
+            <Record field="eyeColor" label="Eye color" />
+        </ItemDetails>
+    );
 
     return (
         <ErrorBoundry>
             <Row
                 leftCol={itemList}
-                rightCol={personDetails}
+                rightCol={itemDetails}
             />
         </ErrorBoundry>
     );
