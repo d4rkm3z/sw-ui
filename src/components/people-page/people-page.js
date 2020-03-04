@@ -3,8 +3,8 @@ import ItemList from '../item-list';
 import ItemDetails from '../item-details';
 import SwapiService from '../../services/SwapiService';
 import Row from '../row';
-import ErrorBoundry from '../error-boundry';
-import { Record } from '../item-details/item-details';
+import ErrorBoundary from '../error-boundary';
+import Record from '../record';
 
 import './people-page.css';
 
@@ -27,16 +27,18 @@ export default React.memo(function PeoplePage() {
             itemId={selectedPerson}
             getData={service.getPerson}
         >
+            <Record field="gender" label="Gender" />
             <Record field="eyeColor" label="Eye color" />
+            <Record field="birthYear" label="Birth year" />
         </ItemDetails>
     );
 
     return (
-        <ErrorBoundry>
+        <ErrorBoundary>
             <Row
                 leftCol={itemList}
                 rightCol={itemDetails}
             />
-        </ErrorBoundry>
+        </ErrorBoundary>
     );
 })

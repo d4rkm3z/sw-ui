@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import Row from '../row';
-import { Record } from '../item-details/item-details';
-import ErrorBoundry from '../error-boundry';
+import ErrorBoundary from '../error-boundary';
 import Header from '../header';
 import RandomPlanet from '../random-planet';
 import PeoplePage from '../people-page';
 import ItemList from '../item-list';
 import SwapiService from '../../services/SwapiService';
 import ItemDetails from '../item-details';
+import Record from '../record';
 
 import './app.css';
 
@@ -31,7 +31,7 @@ export default React.memo(function App() {
             </div>
             <PeoplePage />
 
-            <ErrorBoundry>
+            <ErrorBoundary>
                 <Row
                     leftCol={
                         <ItemList
@@ -51,7 +51,7 @@ export default React.memo(function App() {
                         </ItemDetails>
                     }
                 />
-            </ErrorBoundry>
+            </ErrorBoundary>
         </div>
     );
 });

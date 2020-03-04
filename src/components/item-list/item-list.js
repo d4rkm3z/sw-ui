@@ -9,31 +9,27 @@ function ItemList({
                       onItemSelected,
                       children
                   }) {
-    const [itemList, setPeopleList] = useState(null);
+    const [itemsList, setItemsList] = useState(null);
 
     useEffect(() => {
-        getData().then(setPeopleList);
+        getData().then(setItemsList);
     }, [getData]);
 
-    const renderList = () => {
-        return itemList.map((item) => {
-            const { id } = item;
-            return (
-                <li className="list-group-item"
-                    key={id}
-                    onClick={() => onItemSelected(id)}
-                >
-                    {children(item)}
-                </li>
-            );
-        });
-    };
-
-    if (!itemList) return <Spinner />;
+    if (!itemsList) return <Spinner />;
 
     return (
         <ul className="item-list list-group">
-            {renderList()}
+            {itemsList.map((item) => {
+                const { id } = item;
+                return (
+                    <li className="list-group-item"
+                        key={id}
+                        onClick={() => onItemSelected(id)}
+                    >
+                        {children(item)}
+                    </li>
+                );
+            })}
         </ul>
     );
 }
