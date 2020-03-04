@@ -1,32 +1,34 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import SwapiService from '../../services/SwapiService';
-
-import './item-list.css';
 import Spinner from '../spinner';
 
-const service = new SwapiService();
+import './item-list.css';
 
 function ItemList({
-                      onItemSelected
+                      getData,
+                      onItemSelected,
+                      renderItem
                   }) {
-    const [peopleList, setPeopleList] = useState(null);
+    const [itemList, setPeopleList] = useState(null);
 
     useEffect(() => {
-        service.getAllPeople().then(setPeopleList);
-    }, []);
+        getData().then(setPeopleList);
+    }, [getData]);
 
     const renderList = () => {
-        return peopleList.map(({ id, name }) =>
-            <li className="list-group-item"
-                key={id}
-                onClick={() => onItemSelected(id)}>
-                {name}
-            </li>
-        );
+        return itemList.map((item) => {
+            const { id } = item;
+            return (
+                <li className="list-group-item"
+                    key={id}
+                    onClick={() => onItemSelected(id)}>
+                    {renderItem(item)}
+                </li>
+            );
+        });
     };
 
-    if (!peopleList) return <Spinner />;
+    if (!itemList) return <Spinner />;
 
     return (
         <ul className="item-list list-group">
@@ -34,8 +36,11 @@ function ItemList({
         </ul>
     );
 }
+
 ItemList.propTypes = {
-    onItemSelected: PropTypes.func
+    getData: PropTypes.func,
+    onItemSelected: PropTypes.func,
+    renderItem: PropTypes.func
 };
 
 export default React.memo(ItemList);

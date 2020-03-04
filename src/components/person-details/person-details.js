@@ -14,23 +14,26 @@ function PersonDetails({ personId }) {
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
-        personId && service.getPerson(personId)
-            .then((person) => {
-                setPerson(person);
-                setLoading(false);
-            }).catch(() => {
+        if(personId) {
+            setLoading(true);
+            service.getPerson(personId)
+                .then((person) => {
+                    setPerson(person);
+                    setLoading(false);
+                }).catch(() => {
                 setError(true);
                 setLoading(false);
             });
+        }
     }, [personId]);
 
-    const hasData = !(loading || error) && personId;
+    const hasData = !(loading || error) && person;
 
     return (
         <div className="person-details card">
             {error && <ErrorIndicator />}
             {loading && <Spinner />}
+            {!person && !loading && <span>Select a person from a list</span>}
             {hasData && <PersonView person={person} />}
         </div>
     )
@@ -42,6 +45,7 @@ const PersonView = ({ person }) => {
     return (
         <>
             <img className="person-image"
+                 alt="person"
                  src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`} />
 
             <div className="card-body">
